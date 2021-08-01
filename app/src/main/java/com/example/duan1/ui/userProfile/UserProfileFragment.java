@@ -7,10 +7,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.duan1.LoginActivity;
 import com.example.duan1.R;
@@ -26,6 +29,7 @@ import com.example.duan1.databinding.FragmentHomeBinding;
 import com.example.duan1.databinding.FragmentUserProfileBinding;
 import com.example.duan1.ui.home.HomeViewModel;
 import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,10 +41,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 public class UserProfileFragment extends Fragment {
 
-//    private UserProfileViewModel userProfileViewModel;
     private FragmentUserProfileBinding binding;
     Button btnUpdate, btnLogout;
     FirebaseAuth fAuth;
@@ -48,6 +53,10 @@ public class UserProfileFragment extends Fragment {
     FirebaseFirestore fStore;
     ImageView profileImg;
     Context mContext;
+    TextView fullName, userNameField;
+    String userId;
+    TextInputLayout user, email;
+    StorageReference storageReference;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -55,27 +64,12 @@ public class UserProfileFragment extends Fragment {
         mContext = context;
     }
 
-    StorageReference storageReference;
-    TextView fullName, userNameField;
-    String userId;
-    TextInputLayout user, email;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-//        userProfileViewModel =
-//                new ViewModelProvider(this).get(UserProfileViewModel.class);
-
-       // mContext = container.getContext();
         binding = FragmentUserProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-//        final TextView textView = binding.tvUserName;
-//        userProfileViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-//            @Override
-//            public void onChanged(String s) {
-//                textView.setText(s);
-//            }
-//        });
 
 
         fullName = (TextView) root.findViewById(R.id.tv_userName);
@@ -84,11 +78,26 @@ public class UserProfileFragment extends Fragment {
         user = (TextInputLayout) root.findViewById(R.id.userName);
         profileImg = (ImageView) root.findViewById(R.id.userAvatar);
 
+        email.setEnabled(false);
+        email.setFocusableInTouchMode(false);
+        email.setFocusable(false);
+
         btnLogout = (Button) root.findViewById(R.id.btn_logout);
         btnUpdate = (Button) root.findViewById(R.id.btn_updateProfile);
 
+
+
         fStore = FirebaseFirestore.getInstance();
         fAuth = FirebaseAuth.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
+
+        StorageReference imgRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"/profile.jpg");
+        imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(profileImg);
+            }
+        });
 
         userId = fAuth.getCurrentUser().getUid();
         fUser = fAuth.getCurrentUser();
@@ -111,11 +120,53 @@ public class UserProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                getActivity().onBackPressed();
+                startActivity(new Intent(getContext(), LoginActivity.class));
+                getActivity().finish();
+            }
+        });
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent openGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(openGallery, 1000);
             }
         });
 
         return root;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1000){
+            if (resultCode == Activity.RESULT_OK){
+                Uri imgUri = data.getData();
+//                imgUser.setImageURI(imgUri);
+                uploadImgToFirebase(imgUri);
+            }
+        }
+    }
+
+    private void uploadImgToFirebase(Uri imgUri) {
+        // upload img to firebase storage
+        StorageReference fileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"/profile.jpg");
+        fileRef.putFile(imgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).into(profileImg);
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "Tải lên thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
