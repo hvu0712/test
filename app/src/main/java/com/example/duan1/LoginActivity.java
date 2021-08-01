@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btn_login, btn_login_reg;
     Button tv_forgotPassword;
     FirebaseAuth fAuth;
-    FirebaseDatabase fuck1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
