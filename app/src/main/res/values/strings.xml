@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">duAn1</string>
+    <string name="title_home">Trang chủ</string>
+    <string name="title_dashboard">Tìm món</string>
+    <string name="title_notifications">Thêm món</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="title_userProfile">Hồ sơ</string>
+</resources>

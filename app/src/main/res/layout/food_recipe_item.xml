@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
+    >
+
+    <ImageView
+        android:id="@+id/img_itemFoodRicipe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ricardo_profile"/>
+    <TextView
+        android:id="@+id/tv_titleFoodRicipe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ricardo Milos"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:layout_marginTop="5dp"
+        android:textStyle="bold"
+        android:gravity="center"/>
+
+</LinearLayout>
