@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btn_login, btn_login_reg;
     Button tv_forgotPassword;
     FirebaseAuth fAuth;
+    Button btnsad;
 
 
     @Override
