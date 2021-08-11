@@ -1,32 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
     android:backgroundTint="@color/white"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout
-        android:layout_gravity="center"
+    <WebView
+        android:id="@+id/wv_blog"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Viết gì đó mới"
-            android:textSize="30dp"
-            android:fontFamily="@font/bungee"
-            android:textColor="@color/black"
-            android:layout_gravity="center"
-            />
-        <Button
-            android:id="@+id/btn_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Món mới"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/white"
-            android:textColor="@color/black"
-            />
-    </LinearLayout>
-</ScrollView>
+        android:layout_centerHorizontal="true"
+        />
+</RelativeLayout>

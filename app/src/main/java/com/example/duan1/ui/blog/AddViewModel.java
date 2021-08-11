@@ -1,4 +1,4 @@
-package com.example.duan1.ui.add;
+package com.example.duan1.ui.blog;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

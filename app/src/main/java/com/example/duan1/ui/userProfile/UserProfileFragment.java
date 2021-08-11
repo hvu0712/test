@@ -106,11 +106,13 @@ public class UserProfileFragment extends Fragment {
             documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                        if (e == null){
+                            fullName.setText(documentSnapshot.getString("fname"));
+                            userNameField.setText(documentSnapshot.getString("fname"));
+                            user.getEditText().setText(documentSnapshot.getString("fname"));
+                            email.getEditText().setText(documentSnapshot.getString("email"));
 
-                        fullName.setText(documentSnapshot.getString("fname"));
-                        userNameField.setText(documentSnapshot.getString("fname"));
-                        user.getEditText().setText(documentSnapshot.getString("fname"));
-                        email.getEditText().setText(documentSnapshot.getString("email"));
+                        }
 
                 }
             });

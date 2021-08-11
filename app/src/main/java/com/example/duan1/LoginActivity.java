@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                 final EditText resetMail = new EditText(v.getContext());
                 final AlertDialog.Builder resetPassDialog = new AlertDialog.Builder(v.getContext());
                 resetPassDialog.setTitle("Đổi mật khẩu ");
-                resetPassDialog.setMessage("Nhập email của bạn để đổi mật ");
+                resetPassDialog.setMessage("Nhập email của bạn để đổi mật khẩu");
                 resetPassDialog.setView(resetMail);
 
                 resetPassDialog.setPositiveButton("Gửi", new DialogInterface.OnClickListener() {
@@ -152,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-        finish();
+//        finish();
     }
 
     public void goReg(View view){

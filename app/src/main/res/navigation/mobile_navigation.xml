@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.duan1.ui.add.AddFragment"
+        android:name="com.example.duan1.ui.blog.AddFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_add" />
 

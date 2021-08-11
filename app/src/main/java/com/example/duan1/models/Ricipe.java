@@ -1,8 +1,20 @@
 package com.example.duan1.models;
 
-public class Ricipe {
-    String title;
-    String imgFood;
+import androidx.recyclerview.widget.RecyclerView;
+
+public class Ricipe  {
+    String title, tv_cachLam, tv_ngLieu;
+    String imgFoodLink;
+    String img_detail;
+
+    public Ricipe(String title, String tv_cachLam, String tv_ngLieu, String imgFoodLink, String img_detail) {
+        this.title = title;
+        this.tv_cachLam = tv_cachLam;
+        this.tv_ngLieu = tv_ngLieu;
+        this.imgFoodLink = imgFoodLink;
+        this.img_detail = img_detail;
+    }
+
 
     public String getTitle() {
         return title;
@@ -12,17 +24,36 @@ public class Ricipe {
         this.title = title;
     }
 
-    public String getImgFood() {
-        return imgFood;
+    public String getImgFoodLink() {
+        return imgFoodLink;
     }
 
-    public void setImgFood(String imgFood) {
-        this.imgFood = imgFood;
+    public void setImgFoodLink(String imgFoodLink) {
+        this.imgFoodLink = imgFoodLink;
     }
 
-    public Ricipe(String title, String imgFood) {
-        this.title = title;
-        this.imgFood = imgFood;
+    public String getTv_cachLam() {
+        return tv_cachLam;
+    }
+
+    public void setTv_cachLam(String tv_cachLam) {
+        this.tv_cachLam = tv_cachLam;
+    }
+
+    public String getTv_ngLieu() {
+        return tv_ngLieu;
+    }
+
+    public void setTv_ngLieu(String tv_ngLieu) {
+        this.tv_ngLieu = tv_ngLieu;
+    }
+
+    public String getImg_detail() {
+        return img_detail;
+    }
+
+    public void setImg_detail(String img_detail) {
+        this.img_detail = img_detail;
     }
 
     public Ricipe() {
