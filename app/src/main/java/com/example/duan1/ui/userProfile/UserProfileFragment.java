@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -11,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -44,10 +46,13 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class UserProfileFragment extends Fragment {
 
     private FragmentUserProfileBinding binding;
-    Button btnUpdate, btnLogout;
+    Button btnUpdate, btnLogout, btn_reName;
     FirebaseAuth fAuth;
     FirebaseUser fUser;
     FirebaseFirestore fStore;
@@ -78,12 +83,11 @@ public class UserProfileFragment extends Fragment {
         user = (TextInputLayout) root.findViewById(R.id.userName);
         profileImg = (ImageView) root.findViewById(R.id.userAvatar);
 
-        email.setEnabled(false);
-        email.setFocusableInTouchMode(false);
-        email.setFocusable(false);
+
 
         btnLogout = (Button) root.findViewById(R.id.btn_logout);
         btnUpdate = (Button) root.findViewById(R.id.btn_updateProfile);
+        btn_reName = (Button) root.findViewById(R.id.btn_reName);
 
 
 
@@ -110,13 +114,31 @@ public class UserProfileFragment extends Fragment {
                             fullName.setText(documentSnapshot.getString("fname"));
                             userNameField.setText(documentSnapshot.getString("fname"));
                             user.getEditText().setText(documentSnapshot.getString("fname"));
-                            email.getEditText().setText(documentSnapshot.getString("email"));
-
                         }
 
                 }
             });
 
+        btn_reName.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (error == null){
+                            String reName = user.getEditText().getText().toString();
+                            useReName();
+                            fullName.setText(value.getString(reName));
+                            userNameField.setText(value.getString(reName));
+                            getActivity().finish();
+                            startActivity(getActivity().getIntent());
+                            Toast.makeText(getActivity(), "Đổi tên thành công", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,6 +170,24 @@ public class UserProfileFragment extends Fragment {
                 uploadImgToFirebase(imgUri);
             }
         }
+    }
+
+    public void useReName(){
+        DocumentReference documentReference = fStore.collection("users").document(userId);
+        Map<String, Object> user_reName = new HashMap<>();
+        String reName = user.getEditText().getText().toString();
+        user_reName.put("fname", reName);
+        documentReference.set(user_reName).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
     }
 
     private void uploadImgToFirebase(Uri imgUri) {

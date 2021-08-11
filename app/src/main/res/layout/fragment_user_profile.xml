@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.userProfile.UserProfileFragment"
     android:background="@color/white"
-    android:id="@+id/linear_layout"
+    android:id="@+id/scrollView"
     >
 
     <LinearLayout
@@ -77,28 +77,11 @@
                 android:textColor="@color/black"
                 android:text="Ricardo Milos"/>
         </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:boxStrokeColor="@color/black"
-            android:id="@+id/email"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:hint="Email"
-            android:textColorHint="@color/black"
-            android:backgroundTint="@color/white"
-            >
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textColor="@color/black"
-                android:text="daxua0@gmail.com"/>
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
+        </LinearLayout>
 
     <LinearLayout
         android:padding="20dp"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
@@ -106,20 +89,24 @@
             android:id="@+id/btn_updateProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Update"
+            android:text="Thay ảnh đại diện"
             android:textColor="@color/white"
             android:backgroundTint="@color/black"
             />
-    </LinearLayout>
-    <LinearLayout
-        android:padding="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
         <Button
             android:id="@+id/btn_logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Logout"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/black"
+            />
+        <Button
+            android:id="@+id/btn_reName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đổi tên"
             android:textColor="@color/white"
             android:backgroundTint="@color/black"
             />
