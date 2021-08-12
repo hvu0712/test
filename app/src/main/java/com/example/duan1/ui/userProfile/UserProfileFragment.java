@@ -120,7 +120,7 @@ public class UserProfileFragment extends Fragment {
             });
 
         btn_reName.setOnClickListener(new View.OnClickListener() {
-
+            DocumentReference documentReference = fStore.collection("users").document(userId);
             @Override
             public void onClick(View v) {
                 documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -131,7 +131,6 @@ public class UserProfileFragment extends Fragment {
                             useReName();
                             fullName.setText(value.getString(reName));
                             userNameField.setText(value.getString(reName));
-                            getActivity().finish();
                             startActivity(getActivity().getIntent());
                             Toast.makeText(getActivity(), "Đổi tên thành công", Toast.LENGTH_SHORT).show();
                         }
@@ -173,6 +172,11 @@ public class UserProfileFragment extends Fragment {
     }
 
     public void useReName(){
+        fStore = FirebaseFirestore.getInstance();
+        fAuth = FirebaseAuth.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
+        userId = fAuth.getCurrentUser().getUid();
+        fUser = fAuth.getCurrentUser();
         DocumentReference documentReference = fStore.collection("users").document(userId);
         Map<String, Object> user_reName = new HashMap<>();
         String reName = user.getEditText().getText().toString();
